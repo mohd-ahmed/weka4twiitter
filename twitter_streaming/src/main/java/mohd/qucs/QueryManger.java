@@ -1,0 +1,108 @@
+package mohd.qucs;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+import twitter4j.FilterQuery;
+
+public class QueryManger {
+	
+	private String[] keywords;
+	private double box [][];
+	private String[] languages;
+	private final static Logger logger = Logger.getLogger(QueryManger.class.getName());
+	//TODO STORE FILTER ACCURECIES
+	
+	public QueryManger(double[][] box, String[] languages)  {
+		
+		this.box = box;
+		this.languages = languages;
+		try {
+			setLogin();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public QueryManger()  {
+		
+		try {
+			setLogin();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void setLogin() throws SecurityException, IOException {
+		FileHandler handler = new FileHandler("log\\parser.txt");
+		Logger rootLogger = Logger.getLogger("");
+		logger.addHandler(handler);
+		handler.setFormatter(new SimpleFormatter());
+	//	logger.info("done ,,,,    ");
+	}
+
+	public String[] getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String[] keywords) {
+		this.keywords = keywords;
+	}
+
+	public void addToKeyWords(String[] newKeys) {
+		
+		
+		if (newKeys == null)
+			throw new IllegalArgumentException();
+		int len=this.keywords == null ? 0
+				: this.keywords.length;
+		String[] list = new String[len + newKeys.length];
+		if (keywords != null) {
+			for (int i = 0; i < keywords.length; i++) {
+				list[i] = keywords[i];
+
+			}
+		}
+		for (int i = 0; i < newKeys.length; i++) {
+			list[len+ i] = newKeys[i];
+		}
+		keywords = list;
+
+	}
+	public double[][] getBox() {
+		return box;
+	}
+
+	public void setBox(double[][] box) {
+		this.box = box;
+	}
+
+	public String[] getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(String[] languages) {
+		this.languages = languages;
+	}
+	 public FilterQuery getFilterQuery(){
+		FilterQuery fq =new FilterQuery(); 
+		if(keywords != null)
+			fq.track(keywords);
+		if(languages!=null)
+		 fq.language(languages);
+		if(box!=null)
+		fq.locations(box);
+		logger.info("the new filter query"+fq.toString());
+		return fq; 
+	 }
+
+}
