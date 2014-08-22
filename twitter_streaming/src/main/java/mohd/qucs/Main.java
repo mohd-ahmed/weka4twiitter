@@ -26,17 +26,17 @@ import twitter4j.Status;
 public class Main {
 
 	private static volatile int start = 0;
-	private static final int end = 1;
+	private static volatile int repeat = 1;
 	private static String fileForClass1 = "data\\class1";
 	private static String fileForClass2 = "data\\class2";
-	private static String curruntFile = fileForClass1;
+	private static String curruntFile = fileForClass2;
 	private static String fileExtention = ".arff";
-	private static long delay = 1200L;
+	private static long time_dration = 30L;
 	private static TimeUnit timeUnit = TimeUnit.SECONDS;
-    private static String class_label_1="in";
-    private static String class_label_2="out";
-    private static String curruntLabel=class_label_1;
-    private static String fileHeader="@relation twitter\n@attribute Text string\n@attribute class-att {"+class_label_1+","+class_label_2+"}\n\n@data\n";
+    private static String label_1="in";
+    private static String label_2="out";
+    private static String curruntLabel=label_2;
+    private static String fileHeader="@relation twitter\n@attribute Text string\n@attribute class-att {"+label_1+","+label_2+"}\n\n@data\n";
     private static QueryManger queryManger=new QueryManger();
     private final static Logger logger = Logger.getLogger(Main.class.getName());
     
@@ -91,7 +91,7 @@ public class Main {
 				}
 				
 				// start the weka classifier
-				if (curruntLabel.equals(class_label_1)) {
+				if (curruntLabel.equals(label_1)) {
 					
 					RuleBasedClassifier ruleBasedClassifier = new RuleBasedClassifier("in","out");
 					
@@ -120,17 +120,17 @@ public class Main {
 				logger.info("Executed! : round " + start);
 				
 				// check to stop the session or to continue
-				if (start >= end) {
+				if (start >= repeat) {
 					logger.info("shut down tesks");
 					scheduledExecutorService.shutdown();
 					
 				}else{
 					
-					logger.info("restarting the strem with the new filter query "+"start"+start+"end"+end  );
+					logger.info("restarting the strem with the new filter query "+"start"+start+"end"+repeat  );
 					twitterStreamReciever.filter(queryManger.getFilterQuery());		
 				}
 			}
-		}, delay, delay, timeUnit);
+		}, time_dration, time_dration, timeUnit);
 
 	}
 
@@ -139,7 +139,7 @@ public class Main {
 		
 		
 		RuleBasedClassifier classifier = new RuleBasedClassifier(
-				class_label_1, class_label_2);
+				label_1, label_2);
 		try {
 			classifier.loadDataset(fileForClass1, fileForClass2);
 		} catch (IOException e) {
@@ -164,7 +164,7 @@ public class Main {
 	
 	public static FilterQuery  init( QueryManger queryManager ){
 		
-		Properties prop = new Properties();
+		Properties properties = new Properties();
 		InputStream input = null;
 
 		FilterQuery fq = new FilterQuery();
@@ -172,13 +172,14 @@ public class Main {
 
 			// load a properties file from class path, inside static method
 			FileInputStream in = new FileInputStream("config.properties");
-			prop.load(in);
+			properties.load(in);
 			in.close();
 
 			// prepare the initial filterQuey
 			String[] keywords = null;
-			if (!prop.getProperty("keywords").isEmpty()) {
-				keywords = prop.getProperty("keywords").split(",");
+			if (properties.getProperty("keywords") != null
+					&& !properties.getProperty("keywords").isEmpty()) {
+				keywords = properties.getProperty("keywords").split(",");
 				queryManager.setKeywords(keywords);
 				System.out.println("key words" + keywords.toString());
 				fq.track(keywords);
@@ -188,8 +189,8 @@ public class Main {
 			// String[] languages = { "en" };
 
 			String[] languages = null;
-			if (!prop.getProperty("languages").isEmpty()) {
-				languages = prop.getProperty("languages").split(",");
+			if (!properties.getProperty("languages").isEmpty()) {
+				languages = properties.getProperty("languages").split(",");
 				System.out.println("key words " + languages[0]);
 				queryManager.setLanguages(languages);
 				fq.language(languages);
@@ -197,9 +198,9 @@ public class Main {
 			}
 
 			double[][] box = new double[2][2];
-			if (!prop.getProperty("box").isEmpty()) {
+			if (!properties.getProperty("box").isEmpty()) {
 				int i = 0, j;
-				for (String str : prop.getProperty("box").split(",")) {
+				for (String str : properties.getProperty("box").split(",")) {
 					j = 0;
 					for (String s : str.split("\\s+")) {
 
@@ -214,6 +215,52 @@ public class Main {
 				System.out.println("deep " + Arrays.deepToString(box));
 				// keywords = prop.getProperty("box").split(",");
 				fq.locations(box);
+			}
+
+			// set init param
+
+			String[] params = { "time_dration", "repeat", "label_1",
+					"label_2", "curruntLabel", "fileForClass1",
+					"fileForClass2", "fileExtention" };
+
+			for (String s : params) {
+
+				if (properties.containsKey(s)) {
+
+					switch (s) {
+					case "time_dration":
+						time_dration = Long.parseLong(properties.getProperty(s));
+						break;
+					case "repeat":
+						repeat = Integer.parseInt(   properties.getProperty(s));
+						break;
+
+					case "label_1":
+						label_1 =    properties.getProperty(s);
+						break;
+					case "label_2":
+						label_2 =    properties.getProperty(s);
+						break;
+					case "curruntLabel":
+						curruntLabel =    properties.getProperty(s);
+						curruntFile=curruntLabel.equals(label_1)? fileForClass1:fileForClass2;
+						break;
+					case "fileForClass1":
+						fileForClass1 =    properties.getProperty(s);
+						break;
+					case "fileForClass2":
+						fileForClass2 =    properties.getProperty(s);
+						break;
+					case "fileExtention":
+						fileExtention =    properties.getProperty(s);
+						break;
+
+					default:
+						break;
+					}
+                System.out.println(s+" = "+properties.getProperty(s));
+				}
+
 			}
 
 		} catch (IOException ex) {

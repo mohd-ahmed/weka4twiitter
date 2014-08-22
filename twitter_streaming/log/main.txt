@@ -1,0 +1,34 @@
+Aug 22, 2014 8:57:36 PM mohd.qucs.Main setLogin
+INFO: done ,,,,    
+Aug 22, 2014 8:57:36 PM mohd.qucs.Main main
+INFO: setting fqFilterQuery{count=0, follow=null, track=null, locations=[[D@3a6a5afc, [D@1c7b745a], language=[en]}
+Aug 22, 2014 8:57:36 PM mohd.qucs.Main main
+INFO: strating tweeter stream consumption
+Aug 22, 2014 8:57:36 PM mohd.qucs.Main main
+INFO: starting the timer ...
+Aug 22, 2014 9:07:37 PM mohd.qucs.Main$1 run
+INFO: close the stream and proccessing round : 1
+Aug 22, 2014 9:07:37 PM mohd.qucs.Main$1 run
+INFO: writing to data\class1.arff
+Aug 22, 2014 9:07:37 PM mohd.qucs.Main$1 run
+INFO: que size is1129
+Aug 22, 2014 9:07:38 PM mohd.qucs.Main$1 run
+INFO: done writing
+Aug 22, 2014 9:07:38 PM mohd.qucs.RuleBasedClassifier loadDataset
+INFO: 1129 class 1 
+Aug 22, 2014 9:07:39 PM mohd.qucs.RuleBasedClassifier loadDataset
+INFO: 2774class 2
+Aug 22, 2014 9:07:39 PM mohd.qucs.RuleBasedClassifier loadDataset
+INFO: 3903 of class 2 after merge
+Aug 22, 2014 9:07:39 PM mohd.qucs.RuleBasedClassifier loadDataset
+INFO: in out
+Aug 22, 2014 9:08:29 PM mohd.qucs.Main$1 run
+INFO: the learned keywords: []
+Aug 22, 2014 9:08:29 PM mohd.qucs.Main$1 run
+INFO: printing result array:[]
+Aug 22, 2014 9:08:29 PM mohd.qucs.Main$1 run
+INFO: collectin for in
+Aug 22, 2014 9:08:29 PM mohd.qucs.Main$1 run
+INFO: Executed! : round 1
+Aug 22, 2014 9:08:29 PM mohd.qucs.Main$1 run
+INFO: shut down tesks

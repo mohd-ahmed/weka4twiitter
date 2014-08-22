@@ -141,26 +141,23 @@ public class RuleBasedClassifier {
 
 	/**
 	 * This method trains the classifier on the loaded dataset.
-	 * @return 
+	 * @return ArrayList<String> represents the learned rules
 	 * @throws Exception 
 	 */
 	public ArrayList<String> learn() throws Exception {
 		String[][] keywords=null;
-		ArrayList<String> filters =new	ArrayList<String>();
-	
-			
+		ArrayList<String> filters =new	ArrayList<String>();	
 			/* building the classifier **/
 		// index of the class if it is the last
-										// attr
+		    trainData.setClassIndex(trainData.numAttributes()-1);
 			filter = new StringToWordVector();
-			//filter.setAttributeIndices("first");// index of the String
+			filter.setAttributeIndices("first");// index of the String
 			classifier = new FilteredClassifier();
-		//	filter.setAttributeIndices("first-last");
-		//	filter.setPeriodicPruning(-1.0);
-		//	filter.setStopwords(new File("data/stopword.txt"));
-			filter.setOptions(Utils.splitOptions( "-R first-last -W 1000 -prune-rate -1.0 -N 0 -stemmer weka.core.stemmers.NullStemmer -M 1 -tokenizer \"weka.core.tokenizers.WordTokenizer -delimiters \" \\r\\n\\t.,;:\\\'\\\"()?!\"\""));
+			filter.setAttributeIndices("first-last");
+		    filter.setPeriodicPruning(-1.0);
+		    filter.setStopwords(new File("data/stopword.txt"));
+		//	filter.setOptions(Utils.splitOptions( "-R first-last -W 1000 -prune-rate -1.0 -N 0 -stemmer weka.core.stemmers.NullStemmer -M 1"));
 			classifier.setFilter(filter);
-			trainData.setClassIndex(trainData.numAttributes()-1);
 			JRip jrip = new JRip();
 			String[] options = Utils.splitOptions("-F 3 -N 2.0 -O 2 -S 1");
 			jrip.setOptions( options);
@@ -216,46 +213,8 @@ public class RuleBasedClassifier {
 			System.out.println("classifier :::" + jrip);
 			System.out
 				.println("===== Training on filtered (training) dataset done =====");
-			/*	} catch (Exception e) {
-			System.out.println("Problem found when training " + e.getMessage());
-		}*/
-		
+			
 		return filters;
 	}
 
-	/**
-	 * This method saves the trained model into a file. This is done by simple
-	 * serialization of the classifier object.
-	 * 
-	 * @param fileName
-	 *            The name of the file that will store the trained model.
-	 */
-	public void saveModel(String fileName) {
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(
-					new FileOutputStream(fileName));
-			out.writeObject(classifier);
-			out.close();
-			logger.info("===== Saved model: " + fileName + " =====");
-		} catch (IOException e) {
-			System.out.println("Problem found when writing: " + fileName);
-		}
-	}
-
-	/**
-	 * Main method. It is an example of the usage of this class.
-	 * 
-	 * @param args
-	 *            Command-line arguments: fileData and fileModel.
-	 */
-	/*
-	 * public static void main (String[] args) {
-	 * 
-	 * RuleBasedClassifier learner; if (args.length < 2)
-	 * System.out.println("Usage: java MyLearner <fileData> <fileModel>"); else
-	 * { learner = new RuleBasedClassifier(); learner.loadDataset(args[0]); //
-	 * Evaluation mus be done before training // More info in:
-	 * http://weka.wikispaces.com/Use+WEKA+in+your+Java+code learner.evaluate();
-	 * learner.learn(); learner.saveModel(args[1]); } }
-	 */
 }

@@ -13,7 +13,7 @@ public class MainTest {
 
 	@Test
 	public void test() {
-		try {
+	/*	try {
 			Main.setLogin();
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
@@ -21,7 +21,7 @@ public class MainTest {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		QueryManger queryManager = new QueryManger();
 	
 	Main.init(queryManager);
