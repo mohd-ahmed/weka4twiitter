@@ -14,8 +14,10 @@ import twitter4j.TwitterStreamFactory;
 
 
 /**
+ * this class manage connection to the twitter stream and collects the tweets based on the
+ * given Filter Query and save the collected tweets to a queue
  * @author mohd
- *collects the
+ *
  *
  */
 
@@ -23,7 +25,6 @@ public class TwitterStreamReciever {
 	
 	private ArrayList<Status>  statusQueue ;
 	
-
 
 	private final TwitterStream twitterStream ;
 	
@@ -34,8 +35,7 @@ public class TwitterStreamReciever {
 		twitterStream= new TwitterStreamFactory().getInstance();
 		
         twitterStream.addListener(new TwitterListener());
-       
-       /* log.info("Start listening to the Twitter stream.");*/
+
 	}
 	
 	public ArrayList<Status>  getStatusQueue() {
@@ -52,31 +52,20 @@ public class TwitterStreamReciever {
 		
 	}
 	
-	
-	
 	public TwitterStream getTwitterStream() {
 		return twitterStream;
 	}
 
-
-
 	private class TwitterListener implements StatusListener {
        
-      
-        
         public void onStatus(final Status status) {
         	
         	statusQueue.add(status);
-        //	System.out.println(status.getText());
-         /*   log.debug("Received onStatus: " + status.getText());
-            messageData.addMessage(status);*/
         }
 
-      
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
             /*log.info("Received a status deletion notice id:" + statusDeletionNotice.getStatusId());*/
         }
-
 
         public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
           /*  log.info("Received track limitation notice:" + numberOfLimitedStatuses);*/
@@ -91,24 +80,10 @@ public class TwitterStreamReciever {
         public void onStallWarning(StallWarning warning) {
             /*log.info("Received stall warning:" + warning);*/
         }
-
-        
+ 
         public void onException(Exception ex) {
            /* log.error("Received Exception: ", ex);*/
         }
     }
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

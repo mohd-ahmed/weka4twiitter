@@ -6,7 +6,11 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import twitter4j.FilterQuery;
-
+/**
+ * this class control the filter parameters sent  to twitter stream 
+ * @author mohd
+ *
+ */
 public class QueryManger {
 	
 	private String[] keywords;
@@ -47,7 +51,6 @@ public class QueryManger {
 		Logger rootLogger = Logger.getLogger("");
 		logger.addHandler(handler);
 		handler.setFormatter(new SimpleFormatter());
-	//	logger.info("done ,,,,    ");
 	}
 
 	public String[] getKeywords() {
@@ -93,7 +96,14 @@ public class QueryManger {
 	public void setLanguages(String[] languages) {
 		this.languages = languages;
 	}
+	
+	/**
+	 * 
+	 * @return FilterQuery object that wraps the next query parmeters send to twitter 
+	 */
+	
 	 public FilterQuery getFilterQuery(){
+		//TODO add some logic to select keywords
 		FilterQuery fq =new FilterQuery(); 
 		if(keywords != null)
 			fq.track(keywords);

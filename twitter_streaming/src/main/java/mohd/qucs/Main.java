@@ -40,18 +40,11 @@ public class Main {
     private static QueryManger queryManger=new QueryManger();
     private final static Logger logger = Logger.getLogger(Main.class.getName());
     
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SecurityException, IOException {
 		
 		// get parameters form configfile
-		try {
 			setLogin();
-		} catch (SecurityException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		// prepare initial query
 		FilterQuery fq = init(queryManger);
 		logger.info("setting fq"+fq.toString());
@@ -60,11 +53,11 @@ public class Main {
 		ArrayList<Status> statusQueue = new ArrayList<Status>();
 		final TwitterStreamReciever twitterStreamReciever = new TwitterStreamReciever(statusQueue);
 		twitterStreamReciever.filter(fq);
-	    logger.info("strating tweeter stream consumption");
+	    logger.info("strating tweeter stream consumption"); 
 	    
 		// starting the Timer
 		final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-		logger.info("starting the timer ...");
+		logger.info("starting the timer for ..."+time_dration+" seconds repeated "+repeat +" times");
 		
 		// prepare runnable task with delay x and period x
 		scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
@@ -75,10 +68,10 @@ public class Main {
 				String [] keywords=null;
 				logger.info("close the stream and proccessing round : " + start);
 				
-				// processing the previous seeeion
+				// processing the previous session
 				String filePath= getFileName();
 				try {
-					logger.info("writing to "+filePath);
+					logger.info("writing parsed tweets to "+filePath);
 					BufferedWriter bw = getBufferedWriter(filePath);
 					bw.write(fileHeader);
                  // parse and write tweets
@@ -121,7 +114,7 @@ public class Main {
 				
 				// check to stop the session or to continue
 				if (start >= repeat) {
-					logger.info("shut down tesks");
+					logger.info("shut down tasks");
 					scheduledExecutorService.shutdown();
 					
 				}else{

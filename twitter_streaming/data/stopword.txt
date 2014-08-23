@@ -150,9 +150,7 @@ where
 which
 while
 who
-who
 whom
-why
 why
 with
 won

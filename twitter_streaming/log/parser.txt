@@ -1,0 +1,4 @@
+Aug 23, 2014 12:13:53 PM mohd.qucs.QueryManger getFilterQuery
+INFO: the new filter queryFilterQuery{count=0, follow=null, track=[galaxy, tray, #quote”], locations=[[D@1c7b745a, [D@6d13cf51], language=[en]}
+Aug 23, 2014 12:16:12 PM mohd.qucs.QueryManger getFilterQuery
+INFO: the new filter queryFilterQuery{count=0, follow=null, track=[galaxy, tray, #quote”, 2655], locations=[[D@1c7b745a, [D@6d13cf51], language=[en]}

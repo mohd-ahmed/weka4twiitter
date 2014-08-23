@@ -23,12 +23,11 @@ import weka.core.converters.ArffLoader;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 /**
- * This class implements a simple text learner in Java using WEKA. It loads a
- * text dataset written in ARFF format, evaluates a classifier on it, and saves
- * the learnt model for further use.
+ * This class implements a simple text learner by a classification using RIPPER  Rule based  classifier RIPPER  . It loads a
+ * tow  data sets file written in ARFF format and merge them, evaluates and learn a classifier on it
+ * .
  * 
- * @author Jose Maria Gomez Hidalgo - http://www.esp.uem.es/jmgomez
- * @see MyFilteredClassifier
+ * 
  */
 public class RuleBasedClassifier {
 	private final static Logger logger = Logger
@@ -64,44 +63,37 @@ public class RuleBasedClassifier {
 	 * This method loads a dataset in ARFF format. If the file does not exist,
 	 * or it has a wrong format, the attribute trainData is null.
 	 * 
-	 * @param fileName
-	 *            The name of the file that stores the dataset.
+	 * @param firstCalssPath The name of the file that stores the first dataset.
+	 * @param secondCalssPath The name of the file that stores the second dataset.
 	 * @throws IOException
 	 */
-	public void loadDataset(String firstCalssFile, String secondCalssFile)
+	public void loadDataset(String firstCalssPath, String secondCalssPath)
 			throws IOException {
 		final Logger logger = Logger.getLogger(FilteredClassifier.class
 				.getName());
 		// make instances of first file
 		ArffLoader loader = new ArffLoader();
-		loader.setSource(new File(firstCalssFile));
+		loader.setSource(new File(firstCalssPath));
 	
 		Instances instances1 = loader.getDataSet();
-		logger.finer(loader.getFileDescription());
-		logger.finer(loader.getRevision());
-		logger.finer(loader.getStructure().getRevision());
-
 		// make instances of the second file
 
-		loader.setSource(new File(secondCalssFile));
+		loader.setSource(new File(secondCalssPath));
 		Instances instances2 = loader.getDataSet();
-
-		logger.finer(loader.getFileDescription());
-		logger.finer(loader.getRevision());
-		logger.finer(loader.getStructure().getRevision());
-		logger.info(instances1.numInstances() + " class 1 ");
-		logger.info(instances2.numInstances() + "class 2");
+		
+		logger.info(instances1.numInstances() + " class 1 instances");
+		logger.info(instances2.numInstances() + " class 2 instances");
 
 		// merge the two instances
 		instances2.addAll(instances1);
 		trainData = instances2;
-       
+		trainData.setClassIndex(1);// index of the class if it is the last
+		// attr
 		// set the class labels
-		trainData.setClassIndex(1);
 		firstLabel = trainData.classAttribute().value(0);
 		secondLabel = trainData.classAttribute().value(1);
-		logger.info(trainData.numInstances() + " of class 2 after merge");
-		logger.info(firstLabel + " " + secondLabel);
+		logger.info(trainData.numInstances() + " of class"+ firstLabel+" and "+secondLabel+" after merge");
+		
 	}
 
 	/**
@@ -142,6 +134,7 @@ public class RuleBasedClassifier {
 	/**
 	 * This method trains the classifier on the loaded dataset.
 	 * @return ArrayList<String> represents the learned rules
+	 * each rule is a String of words separated by space
 	 * @throws Exception 
 	 */
 	public ArrayList<String> learn() throws Exception {

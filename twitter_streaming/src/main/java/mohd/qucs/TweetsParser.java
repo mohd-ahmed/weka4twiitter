@@ -12,6 +12,13 @@ import java.util.logging.SimpleFormatter;
 
 import twitter4j.Status;
 
+/**
+ * this class parses and writes the previously collected tweets to  file
+ * @author mohd
+ *
+ */
+
+
 public class TweetsParser {
 
 	BufferedWriter writer;
@@ -40,10 +47,10 @@ public class TweetsParser {
 		try {
 			setLogin();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
 	}
@@ -53,7 +60,7 @@ public class TweetsParser {
 		Logger rootLogger = Logger.getLogger("");
 		logger.addHandler(handler);
 		handler.setFormatter(new SimpleFormatter());
-	//	logger.info("done ,,,,    ");
+
 	}
 
 	public ArrayList<Status> getTweetsQueue() {
@@ -63,74 +70,49 @@ public class TweetsParser {
 	public void setTweetsQueue(ArrayList<Status> tweetsQueue) {
 		this.tweetsQueue = tweetsQueue;
 	}
-
+/**
+ * writes the parsed tweets to a file wraped in a BufferedWriter Object
+ * @param bw bufferedWrter object 
+ */
 	public void WriteToFIle(BufferedWriter bw) {
 
-		
-		// logger.info("before while");
 		for (Status sts : tweetsQueue) {
-
-		//	logger.info("just  for with :" + sts.getText());
-
 			String str = parse(sts.getText());
-	//		logger.info("after calling parse");
-			// String str= sts.getText();
-			// System.out.println("'"+str+"'");
+	
 			try {
 				bw.write("\"" + str + "\"" + "," + label + "\n");
-			//	logger.info("done writing");
-				//writer.write(sts.getText());
-			//	writer.newLine();
+		
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		//	logger.info("after wrting parse");
+	
 		}
 		try {
 			tweetsQueue.clear();
 			bw.close();
-			//writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 	}
 
-	public String parsecopy(String str) {
-
-		StringBuilder sb = new StringBuilder();
-		// String deliminator = "\\s+|:|[,]+|;|[\\.]+\\b";
-		String deliminator = "\\s+";
-		String[] tokens = str.split(deliminator);
-		for (String token : tokens) {
-			// String token = tokenizer.nextToken();
-			if (token.charAt(0) == '\'' || token.charAt(0) == ':'
-					|| token.charAt(0) == '"' || token.charAt(0) == '.')
-				token = token.substring(0);
-			if (token.charAt(token.length() - 1) == '\''
-					|| token.charAt(token.length() - 1) == '"'
-					|| token.charAt(token.length() - 1) == ':'
-					|| token.charAt(token.length() - 1) == '.')
-				token = token.substring(0, token.length() - 1);
-
-			sb.append(token.toLowerCase() + " ");
-		}
-
-		// todo add regex
-		return sb.toString().trim();
-	}
-
+	/**
+	 * using regular expressions to tokens and remove noisy characters
+	 * @param str of the original string of tweet text
+	 * @return
+	 */
+	
 	public String parse(String str) {
-		//logger.info("entering parse ");
+	
 		StringBuilder sb = new StringBuilder();
-		String deliminator = "\\s+|(:\\s)|,|\\+|;+|(\\.\\B)|\\?+|\\?+|!+|\"+|'+|\\(+|\\)+|:+|\\-+|\\|+|\\\\+|/+|\\=+";
-		// String deliminator = "\\s+";
+		String deliminator = "\\?+|(:\\s)+|\\s+|,+|\\++|;+|(\\.\\B)|\\?+|!+|\"+|'+|\\(+|\\)+|:+|\\-+|\\|+|\\\\+|/+|\\=+";
+
 		String[] tokens = str.split(deliminator);
-		// logger.info("tokenization ");
+	
 		for (String token : tokens) {
 			//logger.info(token);
 
-			if (token.equalsIgnoreCase("http") || token.equals("https")|| token.length() <3 || token.matches("\\?+"))
+			if (token.equalsIgnoreCase("http") || token.equals("https")||token.equalsIgnoreCase("rt") ||token.length() <2 || token.matches("\\?+"))
 			continue;
 			if (token.matches("\\W+")) {
 
@@ -144,10 +126,6 @@ public class TweetsParser {
 				sb.append(token + " ");
 			
 		}
-
-		//logger.info("return :" + sb.toString().trim());
-
-		// todo add regex
 		return sb.toString().trim();
 	}
 
