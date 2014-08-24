@@ -14,6 +14,7 @@ import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.rules.JRip;
 import weka.classifiers.rules.JRip.Antd;
 import weka.classifiers.rules.JRip.RipperRule;
+import weka.classifiers.rules.Rule;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -119,13 +120,13 @@ public class RuleBasedClassifier {
 			System.out.println(eval.toClassDetailsString());
 			System.out
 					.println("===== Evaluating on filtered (training) dataset done =====");
-
+/*
 			Enumeration<Instance> enI = trainData.enumerateAttributes();
 
 			while (enI.hasMoreElements()) {
 				Attribute instance = (Attribute) enI.nextElement();
 				logger.info(instance.toString());
-			}
+			}*/
 		} catch (Exception e) {
 			System.out.println("Problem found when evaluating");
 		}
@@ -159,14 +160,14 @@ public class RuleBasedClassifier {
 			classifier.buildClassifier(trainData);
 			
             /*extracting the rules for classalabel 1*/
-			Iterator<RipperRule> it = jrip.getRuleset().iterator();
+			Iterator<Rule> it = jrip.getRuleset().iterator();
 			Attribute label = trainData.classAttribute(); // class nominal
 															// attribute
 			System.out.println("index of the desired label " + label.value(0)); // index of the desired label
 														
 			while (it.hasNext()) { // iterate over each rule
 
-				RipperRule rr = it.next();
+				RipperRule rr = (RipperRule) it.next();
 
 				double consequenceIndex = rr.getConsequent(); // index value of the classified label
 																
@@ -176,11 +177,8 @@ public class RuleBasedClassifier {
 				if (label.value((int) consequenceIndex).equals(firstLabel)) {
                     StringBuilder filter =new StringBuilder();
 					if (rr.hasAntds()) {
+						ArrayList<JRip.Antd> antds =  rr.getAntds();
 
-						@SuppressWarnings("deprecation")
-						FastVector<JRip.Antd> antds = (FastVector<JRip.Antd>) rr.getAntds();
-
-						
 						label.value((int) consequenceIndex).equals("0");
 					
 						for (Iterator<Antd> iterator = antds.iterator(); iterator.hasNext();) {
