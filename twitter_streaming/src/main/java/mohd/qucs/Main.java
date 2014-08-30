@@ -90,12 +90,11 @@ public class Main {
 					
 						try {
 							ruleBasedClassifier.loadDataset("data/class1.arff", "data/class2.arff");
-							ArrayList<String> result = 	ruleBasedClassifier.learn();
-							keywords= new String[result.size()];
+							ArrayList<Filter> result = 	ruleBasedClassifier.learn();
 							logger.info("the learned keywords: "+result.toString());
-							keywords= result.toArray(keywords);
-							logger.info("printing result array:"+Arrays.toString(keywords));
-							queryManger.addToKeyWords(keywords);
+							/*keywords= result.toArray(keywords);
+							logger.info("printing result array:"+Arrays.toString(keywords));*/
+							queryManger.addFilters(result);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -128,7 +127,7 @@ public class Main {
 	}
 
 	
-	public static ArrayList<String> trainClassifier() throws Exception{
+	public static ArrayList<Filter> trainClassifier() throws Exception{
 		
 		
 		RuleBasedClassifier classifier = new RuleBasedClassifier(
@@ -140,7 +139,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		ArrayList<String> keywords = classifier.learn();
+		ArrayList<Filter> keywords = classifier.learn();
 
 		queryManger.addToKeyWords(keywords.toArray(new String[keywords.size()]));
 		return keywords;
@@ -273,7 +272,6 @@ public class Main {
 	}
 	
 
-
 	public static FilterQuery getFilterQuery() {
 
 		// twitterStreamReciever.getTwitterStream().shutdown();
@@ -299,20 +297,15 @@ public class Main {
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-
 			fw = new FileWriter(file.getAbsoluteFile());
 			bw = new BufferedWriter(fw,1048*12);
-
 		} catch (IOException ioe) {
 
 		}
 
 		return bw;
-
 	}
-
 	public static String getFileName() {
 		return curruntFile+fileExtention;
 	}
-
 }

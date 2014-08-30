@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
+
+import java.util.logging.Logger;
+
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -28,7 +32,7 @@ public class TwitterStreamReciever {
 
 	private final TwitterStream twitterStream ;
 	
-	
+	private final static Logger log = Logger.getLogger(TwitterStreamReciever.class.getName());
 	public TwitterStreamReciever(ArrayList<Status>  statusQueue) {
 		
 		this.statusQueue=statusQueue;
@@ -64,25 +68,25 @@ public class TwitterStreamReciever {
         }
 
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-            /*log.info("Received a status deletion notice id:" + statusDeletionNotice.getStatusId());*/
+            log.info("Received a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
         public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-          /*  log.info("Received track limitation notice:" + numberOfLimitedStatuses);*/
+            log.info("Received track limitation notice:" + numberOfLimitedStatuses);
         }
 
      
         public void onScrubGeo(long userId, long upToStatusId) {
-           /* log.info("Received scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);*/
+            log.info("Received scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
         }
 
         
         public void onStallWarning(StallWarning warning) {
-            /*log.info("Received stall warning:" + warning);*/
+            log.info("Received stall warning:" + warning);
         }
  
         public void onException(Exception ex) {
-           /* log.error("Received Exception: ", ex);*/
+            log.info("Received Exception: "+ex.getMessage());
         }
     }
 

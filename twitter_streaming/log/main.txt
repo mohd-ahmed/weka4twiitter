@@ -1,32 +1,14 @@
-Aug 24, 2014 12:43:46 PM mohd.qucs.Main setLogin
+Aug 29, 2014 9:52:54 PM mohd.qucs.Main setLogin
 INFO: done ,,,,    
-Aug 24, 2014 12:43:46 PM mohd.qucs.Main main
-INFO: setting fqFilterQuery{count=0, follow=null, track=[iphone, @IngeFormenti, @T_Reniff, #lovewaterpoloboys, worcester, friends buddy], locations=[[D@3e1c65f7, [D@3a6a5afc], language=[en]}
-Aug 24, 2014 12:43:47 PM mohd.qucs.Main main
+Aug 29, 2014 9:52:54 PM mohd.qucs.Main main
+INFO: setting fqFilterQuery{count=0, follow=null, track=null, locations=[[D@2a6788c4, [D@7344119b], language=[en]}
+Aug 29, 2014 9:52:54 PM mohd.qucs.Main main
 INFO: strating tweeter stream consumption
-Aug 24, 2014 12:43:47 PM mohd.qucs.Main main
+Aug 29, 2014 9:52:54 PM mohd.qucs.Main main
 INFO: starting the timer for ...300 seconds repeated 1 times
-Aug 24, 2014 12:48:47 PM mohd.qucs.Main$1 run
+Aug 29, 2014 9:57:54 PM mohd.qucs.Main$1 run
 INFO: close the stream and proccessing round : 1
-Aug 24, 2014 12:48:47 PM mohd.qucs.Main$1 run
-INFO: writing parsed tweets to data\class1.arff
-Aug 24, 2014 12:48:47 PM mohd.qucs.Main$1 run
-INFO: que size is1016
-Aug 24, 2014 12:48:48 PM mohd.qucs.Main$1 run
-INFO: done writing
-Aug 24, 2014 12:48:49 PM mohd.qucs.RuleBasedClassifier loadDataset
-INFO: 1016 class 1 instances
-Aug 24, 2014 12:48:49 PM mohd.qucs.RuleBasedClassifier loadDataset
-INFO: 8891 class 2 instances
-Aug 24, 2014 12:48:49 PM mohd.qucs.RuleBasedClassifier loadDataset
-INFO: 9907 of classin and out after merge
-Aug 24, 2014 12:54:53 PM mohd.qucs.Main$1 run
-INFO: the learned keywords: [@GardenersofEden]
-Aug 24, 2014 12:54:53 PM mohd.qucs.Main$1 run
-INFO: printing result array:[@GardenersofEden]
-Aug 24, 2014 12:54:53 PM mohd.qucs.Main$1 run
-INFO: collectin for in
-Aug 24, 2014 12:54:53 PM mohd.qucs.Main$1 run
-INFO: Executed! : round 1
-Aug 24, 2014 12:54:53 PM mohd.qucs.Main$1 run
-INFO: shut down tasks
+Aug 29, 2014 9:57:54 PM mohd.qucs.Main$1 run
+INFO: writing parsed tweets to data\class2.arff
+Aug 29, 2014 9:57:54 PM mohd.qucs.Main$1 run
+INFO: que size is13925

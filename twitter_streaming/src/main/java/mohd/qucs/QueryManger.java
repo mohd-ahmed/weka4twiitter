@@ -1,6 +1,8 @@
 package mohd.qucs;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -17,12 +19,15 @@ public class QueryManger {
 	private double box [][];
 	private String[] languages;
 	private final static Logger logger = Logger.getLogger(QueryManger.class.getName());
+	
+	ArrayList<Filter> list;
 	//TODO STORE FILTER ACCURECIES
 	
 	public QueryManger(double[][] box, String[] languages)  {
 		
 		this.box = box;
 		this.languages = languages;
+		list = new ArrayList<>();
 		try {
 			setLogin();
 		} catch (SecurityException e) {
@@ -35,7 +40,7 @@ public class QueryManger {
 	}
 
 	public QueryManger()  {
-		
+		list = new ArrayList<>();
 		try {
 			setLogin();
 		} catch (SecurityException e) {
@@ -105,8 +110,11 @@ public class QueryManger {
 	 public FilterQuery getFilterQuery(){
 		//TODO add some logic to select keywords
 		FilterQuery fq =new FilterQuery(); 
-		if(keywords != null)
+		if( list.size() > 0 )
+			fq.track(listToArray());
+		else if(keywords != null)
 			fq.track(keywords);
+		
 		if(languages!=null)
 		 fq.language(languages);
 		if(box!=null)
@@ -114,5 +122,20 @@ public class QueryManger {
 		logger.info("the new filter query"+fq.toString());
 		return fq; 
 	 }
-
+	 
+	 
+	 
+	 public void addFilters(ArrayList<Filter> nextList ){ 
+		list.addAll(nextList);
+		Collections.sort(list);
+	 }
+	 public String []  listToArray(){ 
+		 String [] strings = new String [list.size()];
+		 int index = 0;
+		 for(Filter f : list){
+			strings[index++]= f.filterString;		 
+		 }
+		return strings; 
+	 }
+	 
 }
